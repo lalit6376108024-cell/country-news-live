@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Country News Desk</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap">
+<style>
+:root{--bg:#eef1f4;--panel:#fff;--ink:#14202b;--mute:#5d6b78;--line:#d5dce3;--c1:#0f6e8c;--c2:#6a5acd;--c3:#2f9e6e;--c4:#c9731c;--c5:#d1417a;--save:#e0a100;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f161d;--panel:#18222c;--ink:#e6edf3;--mute:#93a3b2;--line:#2b3946;--c1:#4cb6d6;--c2:#9d90f0;--c3:#58c796;--c4:#ee9a52;--c5:#ee7aa5;--save:#f0b92b}}
+:root[data-theme="dark"]{--bg:#0f161d;--panel:#18222c;--ink:#e6edf3;--mute:#93a3b2;--line:#2b3946;--c1:#4cb6d6;--c2:#9d90f0;--c3:#58c796;--c4:#ee9a52;--c5:#ee7aa5;--save:#f0b92b}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.45}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:baseline;justify-content:space-between;margin-bottom:16px}
+h1{font-size:1.7rem;font-weight:800;margin:0;letter-spacing:-.02em}
+.note{color:var(--mute);font-size:.85rem}
+.grid{display:grid;grid-template-columns:180px 1fr 240px;gap:16px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px}
+.countries{display:flex;flex-direction:column;gap:2px}
+button{font:inherit;color:inherit;cursor:pointer}
+.cbtn{display:flex;gap:8px;align-items:center;width:100%;text-align:left;background:none;border:0;padding:8px;border-radius:6px}
+.cbtn:hover{background:var(--bg)}
+.cbtn[aria-pressed="true"]{background:var(--c1);color:#fff}
+:focus-visible{outline:2px solid var(--c2);outline-offset:2px}
+.tabs{display:flex;gap:6px;margin-bottom:10px}
+.tab{border:1px solid var(--line);background:var(--panel);padding:6px 12px;border-radius:999px;font-size:.9rem}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.story{display:grid;grid-template-columns:38px 1fr;gap:10px;padding:14px 12px;background:var(--panel);border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.story.saved{border-color:var(--save);box-shadow:inset 3px 0 0 var(--save)}
+.rank{font-size:1.5rem;font-weight:800;color:var(--mute);line-height:1}
+.title{font-weight:600;font-size:1.05rem;margin:0 0 4px}
+.meta{font-size:.82rem;color:var(--mute);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+.badge{font-size:.75rem;padding:1px 8px;border-radius:999px;border:1px solid var(--mute);color:var(--mute)}
+.badge.v{border-color:var(--c3);color:var(--c3)}.badge.p{border-color:var(--c4);color:var(--c4)}
+.score{display:flex;align-items:center;gap:10px;margin:8px 0}
+.bar{flex:1;height:8px;display:flex;border-radius:4px;overflow:hidden;background:var(--bg)}
+.bar i{display:block;height:100%}
+.num{font-weight:800;font-size:1.1rem;min-width:2.2em;text-align:right}
+.acts{display:flex;gap:8px;flex-wrap:wrap}
+.act{border:1px solid var(--line);background:none;border-radius:6px;padding:4px 10px;font-size:.85rem}
+.act.on{background:var(--save);border-color:var(--save);color:#14202b}
+.act.w{border-color:var(--c1);color:var(--c1)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:.78rem;color:var(--mute);margin-bottom:10px}
+.dot{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:4px}
+h2{font-size:.95rem;margin:0 0 8px}
+.w{display:flex;justify-content:space-between;font-size:.85rem;margin:3px 0}
+.chips{display:flex;flex-wrap:wrap;gap:4px}
+.chip{font-size:.78rem;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--mute)}
+.chip.up{border-color:var(--c3);color:var(--c3)}.chip.down{border-color:var(--c4);color:var(--c4)}
+.link{background:none;border:0;color:var(--c1);text-decoration:underline;padding:0;font-size:.85rem}
+.empty{padding:24px;text-align:center;color:var(--mute)}
+.more{display:grid;grid-template-columns:1.5fr 1fr;gap:12px;margin-top:12px}
+.cartoon svg{width:100%;height:auto;border-radius:8px;display:block}
+.cap{font-size:.92rem;min-height:2.7em;margin:6px 0;font-weight:600}
+.prog{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.prog i{display:block;height:100%;background:var(--c1);animation:prog 9s linear infinite}
+.ctl{display:flex;justify-content:space-between;align-items:center}
+.ph{border:1px dashed var(--line);border-radius:8px;padding:10px;font-size:.78rem;color:var(--mute);margin-top:8px}
+.paused *{animation-play-state:paused !important}
+.rn{animation:rain .9s linear infinite}.rs{animation:rise 3s ease-in-out infinite alternate}.sh{animation:shake .3s linear infinite}
+.bo{animation:bob 1s ease-in-out infinite}.fl{animation:up 3s ease-in infinite}.dr{animation:drop 2s ease-in infinite}
+.or{transform-origin:160px 75px;animation:spin 5s linear infinite}
+.g,.pu,.ri{transform-box:fill-box;transform-origin:50% 100%}.g{animation:grow 2.4s ease-out infinite alternate}
+.pu{transform-origin:50% 50%;animation:pulse 1.2s ease-in-out infinite}.ri{transform-origin:50% 50%;animation:ring 2s ease-out infinite}
+@keyframes prog{from{width:0}to{width:100%}}@keyframes rain{from{transform:translateY(-20px)}to{transform:translateY(150px)}}
+@keyframes rise{from{transform:translateY(46px)}to{transform:translateY(0)}}@keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+@keyframes bob{50%{transform:translateY(-8px)}}@keyframes up{from{transform:translateY(0);opacity:1}to{transform:translateY(-60px);opacity:0}}
+@keyframes drop{0%{transform:translateY(-30px);opacity:0}30%{opacity:1}100%{transform:translateY(42px);opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes grow{from{transform:scaleY(.1)}to{transform:scaleY(1)}}
+@keyframes pulse{50%{transform:scale(1.12)}}@keyframes ring{from{transform:scale(.6);opacity:.9}to{transform:scale(1.5);opacity:0}}
+@media (prefers-reduced-motion:reduce){.cartoon *{animation:none !important}}
+@media (max-width:860px){.grid{grid-template-columns:1fr}.countries{flex-direction:row;overflow-x:auto}.cbtn{white-space:nowrap;width:auto}.more{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Country News Desk</h1><span class="note" id="upd">Loading latest news…</span></header>
+<div class="grid">
+<nav class="panel countries" id="countries" aria-label="Countries"></nav>
+<main>
+<div class="tabs" role="tablist"><button class="tab" role="tab" data-tab="today">Today’s ranking</button><button class="tab" role="tab" data-tab="saved">Saved archive</button></div>
+<div class="legend" id="legend"></div>
+<div id="list"></div>
+</main>
+<aside class="panel" id="side"></aside>
+</div>
+</div>
+<script>
+var COUNTRIES=[],RAW={};
+var FEATS=[["Coverage","c1"],["Source credibility","c2"],["Recency","c3"],["Global reach","c4"],["Evidence","c5"]];
+var DEF_W=[.28,.2,.15,.12,.25],TOPICS=["politics","economy","disaster","security","health","science","sport","culture","general"];
+var DEF_T={politics:1.1,economy:1.1,disaster:1.2,security:1.15,health:1,science:.9,sport:.8,culture:.7,general:.9};
+var WHY={disaster:"Why it matters: people and homes are at risk",economy:"Why it matters: prices, jobs and savings",politics:"Why it matters: new rules reach daily life",security:"Why it matters: public safety",health:"Why it matters: community health",science:"Why it matters: new discoveries and technology",sport:"Why it matters: shared moments for fans",culture:"Why it matters: it shapes community life"};
+var state={country:"IN",tab:"today",w:DEF_W.slice(),t:Object.assign({},DEF_T),saved:{},dismissed:{},open:{}},tick=0;
+function load(){try{var o=JSON.parse(localStorage.getItem("cnd_v2")||"null");if(o&&o.w&&o.w.length===5&&o.t){state.w=o.w;state.t=o.t;state.saved=o.saved||{};state.dismissed=o.dismissed||{}}}catch(e){}}
+function persist(){try{localStorage.setItem("cnd_v2",JSON.stringify({w:state.w,t:state.t,saved:state.saved,dismissed:state.dismissed}))}catch(e){}}
+function evScore(s){var e=s.ev;return e[0]*.35+e[1]*.2+e[2]*.25+Math.min(e[3]/6,1)*.2}
+function verdict(s){var v=evScore(s);return v>=.7?["Verified","v"]:v>=.4?["Partly confirmed","p"]:["Unverified",""]}
+function feats(s){return[Math.min(s.o/12,1),s.cr,Math.max(0,1-s.h/24),s.r,evScore(s)]}
+function parts(s){var f=feats(s),sw=state.w.reduce(function(a,b){return a+b},0),tf=state.t[s.topic]||1;return f.map(function(v,i){return 100*state.w[i]/sw*v*tf})}
+function score(s){return Math.min(100,parts(s).reduce(function(a,b){return a+b},0))}
+function hash(t){var h=5381;for(var i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))|0;return(h>>>0).toString(36)}
+function tl(s){return s.link?'<a href="'+s.link.replace(/"/g,"%22")+'" target="_blank" rel="noopener" style="color:inherit">'+s.title+'</a>':s.title}
+function stories(code){return (RAW[code]||[]).map(function(r,i){return{id:code+hash(r[0]),code:code,title:r[0],topic:r[1],o:r[2],cr:r[3],h:r[4],r:r[5],ev:r[6],link:r[7]||""}})}
+function learn(s,dir){var f=feats(s);state.t[s.topic]=Math.max(.4,Math.min(1.6,(state.t[s.topic]||1)+dir*.08));state.w=state.w.map(function(w,i){return Math.max(.05,w+dir*.03*(f[i]-.5))});persist()}
+function el(id){return document.getElementById(id)}
+function face(x,y,m,c){return'<g class="bo"><rect x="'+(x-9)+'" y="'+(y+13)+'" width="18" height="22" rx="6" fill="'+c+'"/><circle cx="'+x+'" cy="'+y+'" r="14" fill="#ffd9a0" stroke="#14202b" stroke-width="2"/><circle cx="'+(x-5)+'" cy="'+(y-3)+'" r="2" fill="#14202b"/><circle cx="'+(x+5)+'" cy="'+(y-3)+'" r="2" fill="#14202b"/><path d="M'+(x-5)+' '+(y+6)+(m?'q5 6 10 0':'q5 -5 10 0')+'" stroke="#14202b" stroke-width="2" fill="none"/></g>'}
+var BG={disaster:"#9db7d1",economy:"#cfe8dc",politics:"#e3dcf5",security:"#d6dde6",health:"#dcefe6",science:"#0f1d33",sport:"#cfe6c4",culture:"#f6dfe6"};
+var SC={
+disaster:function(){var r="";[30,80,130,200,250,290].forEach(function(x,i){r+='<rect class="rn" style="animation-delay:-'+(i*.15)+'s" x="'+x+'" width="2" height="12" fill="#2d6ea8"/>'});return'<g class="sh"><rect x="120" y="62" width="70" height="48" fill="#f2c27b"/><path d="M112 64L155 32L198 64Z" fill="#c0553f"/><rect x="148" y="84" width="16" height="26" fill="#7a4b2a"/></g>'+r+'<rect class="rs" y="104" width="320" height="60" fill="#3a86c8" opacity=".85"/>'+face(250,70,0,"#c0553f")},
+economy:function(){var r="";[[60,40],[110,70],[160,55],[210,95]].forEach(function(b,i){r+='<rect class="g" style="animation-delay:'+(i*.3)+'s" x="'+b[0]+'" y="'+(130-b[1])+'" width="34" height="'+b[1]+'" rx="3" fill="#0f6e8c"/>'});return r+'<rect x="40" y="130" width="230" height="3" fill="#14202b"/><g class="bo"><circle cx="285" cy="45" r="14" fill="#f0b92b" stroke="#14202b" stroke-width="2"/><text x="285" y="51" text-anchor="middle" font-size="16" font-weight="700" fill="#14202b">$</text></g>'+face(24,88,1,"#0f6e8c")},
+politics:function(){var r="";[238,254,270].forEach(function(x,i){r+='<rect class="dr" style="animation-delay:'+(i*.6)+'s" x="'+x+'" y="40" width="12" height="16" fill="#fff" stroke="#14202b" stroke-width="1.5"/>'});return'<path d="M90 70L150 35L210 70Z" fill="#6a5acd"/><rect x="100" y="70" width="100" height="55" fill="#fff"/><rect x="112" y="74" width="10" height="47" fill="#c9c2ee"/><rect x="145" y="74" width="10" height="47" fill="#c9c2ee"/><rect x="178" y="74" width="10" height="47" fill="#c9c2ee"/>'+r+'<rect x="232" y="100" width="50" height="28" fill="#6a5acd"/>'+face(45,90,1,"#6a5acd")},
+security:function(){return'<circle class="ri" cx="160" cy="75" r="50" fill="none" stroke="#c9731c" stroke-width="3"/><circle class="ri" style="animation-delay:-1s" cx="160" cy="75" r="50" fill="none" stroke="#c9731c" stroke-width="3"/><g class="pu"><path d="M160 22L205 40V78Q205 112 160 128Q115 112 115 78V40Z" fill="#0f6e8c"/></g><rect x="148" y="68" width="24" height="20" rx="3" fill="#fff"/><path d="M153 68V60a7 7 0 0 1 14 0V68" stroke="#fff" stroke-width="3" fill="none"/>'+face(48,90,0,"#14202b")},
+health:function(){return'<g class="pu"><path d="M160 118C120 90 118 55 142 50C152 48 160 56 160 62C160 56 168 48 178 50C202 55 200 90 160 118Z" fill="#d1417a"/></g><text class="fl" x="100" y="110" font-size="22" font-weight="800" fill="#2f9e6e">+</text><text class="fl" style="animation-delay:-1s" x="225" y="110" font-size="22" font-weight="800" fill="#2f9e6e">+</text><text class="fl" style="animation-delay:-2s" x="262" y="110" font-size="18" font-weight="800" fill="#2f9e6e">+</text>'+face(48,88,1,"#2f9e6e")},
+science:function(){var r="";[[30,30],[80,120],[250,40],[290,110],[220,20],[60,70]].forEach(function(p){r+='<circle cx="'+p[0]+'" cy="'+p[1]+'" r="1.5" fill="#fff"/>'});return r+'<circle cx="160" cy="75" r="26" fill="#4cb6d6"/><ellipse cx="160" cy="75" rx="40" ry="8" fill="none" stroke="#9d90f0" stroke-width="3"/><g class="or"><g transform="translate(160 20)"><path d="M0-9L5 6H-5Z" fill="#fff"/><circle cy="-1" r="2" fill="#0f6e8c"/></g></g>'},
+sport:function(){return'<rect y="118" width="320" height="40" fill="#6bb36b"/><rect x="240" y="66" width="52" height="52" fill="none" stroke="#fff" stroke-width="3"/><g class="bo"><circle cx="150" cy="100" r="12" fill="#fff" stroke="#14202b" stroke-width="2"/><path d="M150 92l7 5-3 8h-8l-3-8z" fill="#14202b"/></g>'+face(60,80,1,"#c9731c")+face(214,80,1,"#0f6e8c")},
+culture:function(){return'<text class="fl" x="100" y="110" font-size="24" fill="#6a5acd">♪</text><text class="fl" style="animation-delay:-1s" x="200" y="110" font-size="24" fill="#c9731c">♫</text><text class="fl" style="animation-delay:-2s" x="150" y="110" font-size="20" fill="#0f6e8c">♪</text><rect x="120" y="100" width="80" height="26" fill="#e66a9b"/><ellipse cx="160" cy="100" rx="40" ry="12" fill="#d1417a"/><ellipse cx="160" cy="126" rx="40" ry="12" fill="#e66a9b"/>'+face(48,88,1,"#6a5acd")+face(272,88,1,"#c9731c")}};
+BG.general=BG.culture;SC.general=SC.culture;WHY.general="Why it matters: it is making headlines";
+function cartoon(s){var v=verdict(s)[0],n=s.ev[3];var caps=[s.title,WHY[s.topic],"Evidence: "+n+" independent source"+(n>1?"s":"")+". "+v+"."];
+return'<div class="cartoon" data-c0="'+caps[0]+'" data-c1="'+caps[1]+'" data-c2="'+caps[2]+'"><svg viewBox="0 0 320 150" role="img" aria-label="Cartoon explainer: '+s.title+'"><rect width="320" height="150" fill="'+BG[s.topic]+'"/>'+SC[s.topic]()+'</svg><div class="cap">'+caps[0]+'</div><div class="prog"><i></i></div><div class="ctl"><span class="note">Cartoon explainer (illustration)</span><button class="act" data-act="pause">Pause</button></div></div>'}
+function chips(s){var e=s.ev,it=[[e[0],"Agency photo"],[e[1],"Location tagged"],[e[2],"Official data"]];return it.map(function(x){return'<span class="chip'+(x[0]?' up':'')+'">'+(x[0]?'✓ ':'– ')+x[1]+'</span>'}).join("")+'<span class="chip'+(e[3]>=4?' up':'')+'">'+e[3]+' independent source'+(e[3]>1?'s':'')+'</span>'}
+function card(s,rank,saved){var p=parts(s),sc=Math.round(score(s)),vd=verdict(s),open=state.open[s.id];
+var bar=p.map(function(v,i){return'<i style="width:'+v+'%;background:var(--'+FEATS[i][1]+')" title="'+FEATS[i][0]+': '+v.toFixed(0)+'"></i>'}).join("");
+var more=open?'<div class="more">'+cartoon(s)+'<div><h2>Evidence</h2><div class="chips">'+chips(s)+'</div>'+(s.ev[0]?'<div class="ph">📷 Photo slot: the credited agency image appears here once the page runs on your own site.</div>':'')+(s.ev[1]?'<div class="ph">📍 Map slot: pin for the tagged location.</div>':'')+'</div></div>':'';
+return'<article class="story'+(saved?' saved':'')+'"><div class="rank">'+rank+'</div><div><p class="title">'+tl(s)+'</p><div class="meta"><span>'+s.topic+'</span><span>'+s.o+' outlets</span><span>'+s.h+'h ago</span><span class="badge '+vd[1]+'">'+vd[0]+'</span></div><div class="score"><div class="bar">'+bar+'</div><span class="num">'+sc+'</span></div><div class="acts"><button class="act'+(saved?' on':'')+'" data-act="save" data-id="'+s.id+'">'+(saved?'Saved':'Save')+'</button><button class="act w" data-act="watch" data-id="'+s.id+'" aria-expanded="'+!!open+'">'+(open?'Hide cartoon':'Watch cartoon')+'</button><button class="act" data-act="dismiss" data-id="'+s.id+'">Dismiss</button></div>'+more+'</div></article>'}
+function render(){
+el("countries").innerHTML=COUNTRIES.map(function(c){return'<button class="cbtn" data-c="'+c.c+'" aria-pressed="'+(state.country===c.c)+'"><span>'+c.f+'</span>'+c.n+'</button>'}).join("");
+document.querySelectorAll(".tab").forEach(function(b){b.setAttribute("aria-selected",b.dataset.tab===state.tab)});
+el("legend").innerHTML=FEATS.map(function(f){return'<span><span class="dot" style="background:var(--'+f[1]+')"></span>'+f[0]+'</span>'}).join("");
+var h="";
+if(state.tab==="today"){
+var all=stories(state.country).filter(function(s){return!state.dismissed[s.id]}).sort(function(a,b){return score(b)-score(a)});
+var nd=Object.keys(state.dismissed).filter(function(k){return k.indexOf(state.country)===0}).length;
+h=all.map(function(s,i){return card(s,i+1,!!state.saved[s.id])}).join("");
+if(!all.length)h='<div class="empty">All stories dismissed.</div>';
+if(nd)h+='<button class="link" data-act="restore">Restore '+nd+' dismissed</button>';
+}else{
+var sv=Object.keys(state.saved).map(function(k){return state.saved[k]}).sort(function(a,b){return b.at-a.at});
+h=sv.length?sv.map(function(e){var s=e.s,c=COUNTRIES.filter(function(x){return x.c===s.code})[0]||{f:"",n:s.code};
+return'<div class="story saved"><div class="rank">'+c.f+'</div><div><p class="title">'+tl(s)+'</p><div class="meta"><span>'+c.n+'</span><span>'+s.topic+'</span><span>saved '+new Date(e.at).toLocaleDateString()+'</span><span>score at save: '+e.sc+'</span></div><div class="chips" style="margin-top:6px">'+chips(s)+'</div><div class="acts" style="margin-top:8px"><button class="act" data-act="unsave" data-id="'+s.id+'">Remove</button></div></div></div>'}).join(""):'<div class="empty">Nothing saved yet. Save a story from Today’s ranking.</div>';
+}
+el("list").innerHTML=h;
+var tw=TOPICS.map(function(t){var d=state.t[t]-DEF_T[t];return'<span class="chip'+(d>.01?' up':d<-.01?' down':'')+'">'+t+' '+state.t[t].toFixed(2)+'</span>'}).join("");
+var sw=state.w.reduce(function(a,b){return a+b},0);
+el("side").innerHTML='<h2>What the ranking has learned</h2><div class="note">Saving a story raises its topic and its strongest signals. Dismissing lowers them.</div><div style="margin-top:10px">'+FEATS.map(function(f,i){return'<div class="w"><span><span class="dot" style="background:var(--'+f[1]+')"></span>'+f[0]+'</span><b>'+Math.round(state.w[i]/sw*100)+'%</b></div>'}).join("")+'</div><div class="chips" style="margin-top:8px">'+tw+'</div><p><button class="link" data-act="reset">Reset learning</button></p>';
+}
+function find(id){return stories(id.slice(0,2)).filter(function(s){return s.id===id})[0]}
+document.addEventListener("click",function(e){
+var t=e.target.closest("button");if(!t)return;
+if(t.dataset.c){state.country=t.dataset.c;state.tab="today"}
+else if(t.dataset.tab){state.tab=t.dataset.tab}
+else if(t.dataset.act==="pause"){var c=t.closest(".cartoon");c.classList.toggle("paused");t.textContent=c.classList.contains("paused")?"Play":"Pause";return}
+else if(t.dataset.act==="watch"){state.open[t.dataset.id]=!state.open[t.dataset.id]}
+else if(t.dataset.act==="save"){var s=find(t.dataset.id);if(state.saved[s.id]){delete state.saved[s.id];learn(s,-1)}else{state.saved[s.id]={s:s,at:Date.now(),sc:Math.round(score(s))};learn(s,1)}persist()}
+else if(t.dataset.act==="unsave"){delete state.saved[t.dataset.id];persist()}
+else if(t.dataset.act==="dismiss"){var d=find(t.dataset.id);state.dismissed[d.id]=1;learn(d,-1)}
+else if(t.dataset.act==="restore"){Object.keys(state.dismissed).forEach(function(k){if(k.indexOf(state.country)===0)delete state.dismissed[k]});persist()}
+else if(t.dataset.act==="reset"){state.w=DEF_W.slice();state.t=Object.assign({},DEF_T);persist()}
+else return;
+render()});
+setInterval(function(){tick++;document.querySelectorAll(".cartoon").forEach(function(c){if(c.classList.contains("paused"))return;var n=c.querySelector(".cap");if(n)n.textContent=c.dataset["c"+(tick%3)]})},3000);
+function clean(t){return String(t).replace(/["<>]/g,"’").replace(/&/g,"and")}
+fetch("data/news.json",{cache:"no-store"}).then(function(r){return r.json()}).then(function(d){
+Object.keys(d.countries||{}).forEach(function(c){var o=d.countries[c];COUNTRIES.push({c:c,n:o.name,f:o.flag});RAW[c]=o.stories.map(function(r){r[0]=clean(r[0]);return r})});
+if(COUNTRIES.length)state.country=COUNTRIES[0].c;
+el("upd").textContent=d.updated?"Updated "+new Date(d.updated).toLocaleString()+". Cartoons are illustrations, not footage.":"No data yet. Run the update workflow once.";
+load();render()}).catch(function(){el("upd").textContent="No data yet. Run the update workflow once.";load();render()});
+</script>
+</body>
+</html>
